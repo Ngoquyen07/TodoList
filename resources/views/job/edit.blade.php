@@ -37,7 +37,7 @@
 
         <form action="{{ route('jobs.update', $job) }}" method="POST">
             @csrf
-            @method('PUT')
+            @method('PATCH')
             <div class="mb-3" >
                 <label>Job Name</label>
                 <input type="text" name="name" class="form-control" value="{{ $job->name }}  " disabled >
