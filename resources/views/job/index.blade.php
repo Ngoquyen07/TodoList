@@ -2,11 +2,37 @@
 
 @section('content')
     <div class="container mt-5">
+        {{-- Success message --}}
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>{{ session('success') }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
 
+        {{-- Error message --}}
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>{{ session('error') }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
+        {{-- Validation errors --}}
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <ul class="m-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold m-0">TODO LIST</h2>
 
-            <a href="#">
+            <a href="{{ route('jobs.create') }}">
                 <button class="btn btn-primary px-4">
                     <i class="bi bi-plus-circle"></i> New
                 </button>
@@ -52,8 +78,15 @@
                             </td>
 
                             <td>
-                                <a href="#" class="btn btn-sm btn-outline-primary">Edit</a>
-                                <a href="#" class="btn btn-sm btn-outline-danger">Delete</a>
+                                <a href="{{route('jobs.edit',$job)}}" class="btn btn-sm btn-outline-primary">Detail</a>
+                                <form action="{{ route('jobs.destroy', $job) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('Are you sure to delete this job?')">
+                                        Delete
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach

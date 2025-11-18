@@ -21,7 +21,7 @@ class Job extends Model
             0 => 'Active',
             1 => 'Drop',
             2 => 'Done',
-            3 => 'Destroy'
+            3 => 'Ignore'
         ] [$this->status] ?? 'Not define';
     }
 }

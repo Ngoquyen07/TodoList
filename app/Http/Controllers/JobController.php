@@ -23,6 +23,7 @@ class JobController extends Controller
     public function create()
     {
         //
+        return view('job.create');
     }
 
     /**
@@ -30,7 +31,20 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $newJob = $request->validate([
+                'name' => 'required',
+                'status' => 'required|integer',
+                'description' => 'nullable|string',
+            ]);
+
+            Job::create($newJob);
+            return redirect()->route('jobs.create')
+                ->with('success', 'Job created successfully!');
+
+        } catch (\Exception $exception) {
+            return back()->with('error', 'Something went wrong!' . $exception->getMessage());
+        }
     }
 
     /**
@@ -46,7 +60,8 @@ class JobController extends Controller
      */
     public function edit(Job $job)
     {
-        //
+        return view('job.edit', compact('job'));
+
     }
 
     /**
@@ -55,6 +70,23 @@ class JobController extends Controller
     public function update(Request $request, Job $job)
     {
         //
+        try {
+            $updatedData = $request->validate([
+                'status' => 'required|integer',
+                'description' => 'nullable|string',
+            ]);
+
+            // Cập nhật
+            $job->update($updatedData);
+
+            // Điều hướng trở lại form edit
+            return redirect()->route('jobs.edit', $job)
+                ->with('success', 'Job updated successfully!');
+
+        } catch (\Exception $exception) {
+            return redirect()->route('jobs.edit',$job)
+                ->with('error', 'Something went wrong!' . $exception->getMessage());
+        }
     }
 
     /**
@@ -63,5 +95,15 @@ class JobController extends Controller
     public function destroy(Job $job)
     {
         //
+        try {
+            $job->is_deleted = true;
+            $job->save();
+
+            return redirect()->route('jobs.index')
+                ->with('success', 'Job deleted successfully !');
+        }
+        catch (\Exception $e) {
+            return back()->with('error', 'Something went wrong!' . $e->getMessage());
+        }
     }
 }
