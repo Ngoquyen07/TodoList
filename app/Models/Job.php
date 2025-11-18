@@ -24,4 +24,10 @@ class Job extends Model
             3 => 'Ignore'
         ] [$this->status] ?? 'Not define';
     }
+    public function getUpdatedAtFormattedAttribute()
+    {
+        return $this->updated_at->format('H:i - d/m/Y');
+    }
+
 }
+

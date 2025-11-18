@@ -13,7 +13,11 @@ class JobController extends Controller
     public function index()
     {
         //
-        $jobs = Job::all()->where('is_deleted',false)->sortBy('status');
+        $jobs = Job::all()->where('is_deleted',false)
+            ->sortBy([
+                ['status', 'asc'],
+                ['updated_at', 'desc'],
+            ]);
         return view('job.index',compact('jobs'));
     }
 

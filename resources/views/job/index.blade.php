@@ -47,6 +47,7 @@
                         <th>No.</th>
                         <th>Name</th>
                         <th>Status</th>
+                        <th>Last update</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -75,6 +76,9 @@
                                 <span class="badge {{ $badgeClass }} px-3 py-2">
                                     {{ $statusText }}
                                 </span>
+                            </td>
+                            <td>
+                                {{$job->updated_at_formatted}}
                             </td>
 
                             <td>
