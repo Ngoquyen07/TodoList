@@ -28,6 +28,8 @@ class Job extends Model
     {
         return $this->updated_at->format('H:i - d/m/Y');
     }
-
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }
 

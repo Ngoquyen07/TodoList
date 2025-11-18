@@ -13,12 +13,20 @@ class JobController extends Controller
     public function index()
     {
         //
-        $jobs = Job::all()->where('is_deleted',false)
-            ->sortBy([
-                ['status', 'asc'],
-                ['updated_at', 'desc'],
-            ]);
-        return view('job.index',compact('jobs'));
+        $jobs = auth()->user()
+            ->jobs()
+            ->where('is_deleted', false)
+            ->orderBy('status', 'asc')
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        return view('job.index', compact('jobs'));
+//        $jobs = Job::all()->where('is_deleted',false)
+//            ->sortBy([
+//                ['status', 'asc'],
+//                ['updated_at', 'desc'],
+//            ]);
+//        return view('job.index',compact('jobs'));
     }
 
     /**
@@ -41,8 +49,7 @@ class JobController extends Controller
                 'status' => 'required|integer',
                 'description' => 'nullable|string',
             ]);
-
-            Job::create($newJob);
+            $request->user()->jobs()->create($newJob);
             return redirect()->route('jobs.create')
                 ->with('success', 'Job created successfully!');
 
@@ -96,13 +103,12 @@ class JobController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Job $job)
+    public function destroy(Request $request , Job $job)
     {
         //
         try {
             $job->is_deleted = true;
             $job->save();
-
             return redirect()->route('jobs.index')
                 ->with('success', 'Job deleted successfully !');
         }
