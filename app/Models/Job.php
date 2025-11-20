@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Policies\JobPolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,6 +10,9 @@ class Job extends Model
 {
     //
     use HasFactory;
+    protected $policies = [
+        Job::class => JobPolicy::class,
+    ];
     protected $table = 'jobs';
     protected $primaryKey = 'id';
     protected $fillable = [

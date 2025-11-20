@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Job;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 
 class JobController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    use AuthorizesRequests;
     public function index()
     {
         //
@@ -71,6 +75,8 @@ class JobController extends Controller
      */
     public function edit(Job $job)
     {
+        // Dung Gate
+        Gate::authorize('correctUser', $job);
         return view('job.edit', compact('job'));
 
     }
@@ -80,7 +86,8 @@ class JobController extends Controller
      */
     public function update(Request $request, Job $job)
     {
-        //
+        // Dung Policy
+        $this->authorize('update', $job);
         try {
             $updatedData = $request->validate([
                 'status' => 'required|integer',
@@ -106,6 +113,7 @@ class JobController extends Controller
     public function destroy(Request $request , Job $job)
     {
         //
+        Gate::authorize('correctUser', $job);
         try {
             $job->is_deleted = true;
             $job->save();
