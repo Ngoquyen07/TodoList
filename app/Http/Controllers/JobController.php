@@ -34,7 +34,7 @@ class JobController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the forms for creating a new resource.
      */
     public function create()
     {
@@ -71,7 +71,7 @@ class JobController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the forms for editing the specified resource.
      */
     public function edit(Job $job)
     {
@@ -97,7 +97,7 @@ class JobController extends Controller
             // Cập nhật
             $job->update($updatedData);
 
-            // Điều hướng trở lại form edit
+            // Điều hướng trở lại forms edit
             return redirect()->route('jobs.edit', $job)
                 ->with('success', 'Job updated successfully!');
 
